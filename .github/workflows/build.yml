@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [generic_build]
+    branches: [gatewayfm/generic-main]
   pull_request:
-    branches: [generic_build]
+    branches: [gatewayfm/generic-main]
 
 jobs:
   build:
@@ -39,6 +39,14 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: 1.17
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Generate
+        run: go generate -x
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
