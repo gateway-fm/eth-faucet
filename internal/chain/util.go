@@ -11,6 +11,11 @@ func EtherToWei(amount int64) *big.Int {
 	return new(big.Int).Mul(big.NewInt(amount), ether)
 }
 
+func GweiToWei(amount int64) *big.Int {
+	multiplier := new(big.Int).Exp(big.NewInt(10), big.NewInt(9), nil)
+	return new(big.Int).Mul(big.NewInt(amount), multiplier)
+}
+
 func Has0xPrefix(str string) bool {
 	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
 }
