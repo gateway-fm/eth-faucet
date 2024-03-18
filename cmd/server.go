@@ -24,10 +24,12 @@ var (
 	proxyCntFlag = flag.Int("proxycount", 0, "Count of reverse proxies in front of the server")
 	versionFlag  = flag.Bool("version", false, "Print version number")
 
-	payoutFlag   = flag.Int("faucet.amount", 1, "Number of Ethers to transfer per user request")
-	intervalFlag = flag.Int("faucet.minutes", 1440, "Number of minutes to wait between funding rounds")
-	netnameFlag  = flag.String("faucet.name", "testnet", "Network name to display on the frontend")
-	symbolFlag   = flag.String("faucet.symbol", "ETH", "Token symbol to display on the frontend")
+	payoutFlag     = flag.Int64("faucet.amount", 1000000000, "Number of Gwei to transfer per user request")
+	intervalFlag   = flag.Int("faucet.minutes", 1440, "Number of minutes to wait between funding rounds")
+	netnameFlag    = flag.String("faucet.name", "testnet", "Network name to display on the frontend")
+	symbolFlag     = flag.String("faucet.symbol", "ETH", "Token symbol to display on the frontend")
+	logoFlag       = flag.String("frontend.logo", "/gatewayfm-logo.svg", "Logo to display on the frontend")
+	backgroundFlag = flag.String("frontend.background", "/background.jpg", "Background to display on the frontend")
 
 	keyJSONFlag  = flag.String("wallet.keyjson", os.Getenv("KEYSTORE"), "Keystore file to fund user requests with")
 	keyPassFlag  = flag.String("wallet.keypass", "password.txt", "Passphrase text file to decrypt keystore")
@@ -60,7 +62,7 @@ func Execute() {
 	if err != nil {
 		panic(fmt.Errorf("cannot connect to web3 provider: %w", err))
 	}
-	config := server.NewConfig(*netnameFlag, *symbolFlag, *httpPortFlag, *intervalFlag, *payoutFlag, *proxyCntFlag, *hcaptchaSiteKeyFlag, *hcaptchaSecretFlag)
+	config := server.NewConfig(*netnameFlag, *symbolFlag, *httpPortFlag, *intervalFlag, *payoutFlag, *proxyCntFlag, *hcaptchaSiteKeyFlag, *hcaptchaSecretFlag, *logoFlag, *backgroundFlag)
 	go server.NewServer(txBuilder, config).Run()
 
 	c := make(chan os.Signal, 1)

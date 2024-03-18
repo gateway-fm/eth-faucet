@@ -25,17 +25,20 @@ The faucet is a web application with the goal of distributing small amounts of E
 ### Installation
 
 1. Clone the repository and navigate to the app’s directory
+
 ```bash
 git clone https://github.com/chainflag/eth-faucet.git
 cd eth-faucet
 ```
 
 2. Bundle Frontend web with Vite
+
 ```bash
 go generate
 ```
 
-3. Build Go project 
+3. Build Go project
+
 ```bash
 go build -o eth-faucet
 ```
@@ -57,6 +60,7 @@ go build -o eth-faucet
 ### Configuration
 
 You can configure the funder by using environment variables instead of command-line flags as follows:
+
 ```bash
 export WEB3_PROVIDER=rpc endpoint
 export PRIVATE_KEY=hex private key
@@ -71,6 +75,7 @@ echo "your keystore password" > `pwd`/password.txt
 ```
 
 Then run the faucet application without the wallet command-line flags:
+
 ```bash
 ./eth-faucet -httpport 8080
 ```
@@ -83,12 +88,14 @@ The following are the available command-line flags(excluding above wallet flags)
 |-------------------|--------------------------------------------------|---------------|
 | -httpport         | Listener port to serve HTTP connection           | 8080          |
 | -proxycount       | Count of reverse proxies in front of the server  | 0             |
-| -faucet.amount    | Number of Ethers to transfer per user request    | 1             |
+| -faucet.amount    | Number of Gwei to transfer per user request      | 1000000000    |
 | -faucet.minutes   | Number of minutes to wait between funding rounds | 1440          |
 | -faucet.name      | Network name to display on the frontend          | testnet       |
 | -faucet.symbol    | Token symbol to display on the frontend          | ETH           |
 | -hcaptcha.sitekey | hCaptcha sitekey                                 |               |
 | -hcaptcha.secret  | hCaptcha secret                                  |               |
+| -frontend.logo    | Logo URL to display on the frontend              | /gatewayfm-logo.svg |
+| -frontend.background | Background to display on the frontend         | /background.jpg |
 
 ### Docker deployment
 
