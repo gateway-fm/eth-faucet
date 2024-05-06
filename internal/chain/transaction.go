@@ -3,16 +3,15 @@ package chain
 import (
 	"context"
 	"crypto/ecdsa"
-	"math/big"
-	"strings"
-	"sync/atomic"
-
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	log "github.com/sirupsen/logrus"
+	"math/big"
+	"strings"
+	"sync/atomic"
 )
 
 type TxBuilder interface {
@@ -26,6 +25,7 @@ type TxBuild struct {
 	signer      types.Signer
 	fromAddress common.Address
 	nonce       uint64
+	clientEth   *ethclient.Client
 }
 
 func NewTxBuilder(provider string, privateKey *ecdsa.PrivateKey, chainID *big.Int) (TxBuilder, error) {
@@ -46,6 +46,7 @@ func NewTxBuilder(provider string, privateKey *ecdsa.PrivateKey, chainID *big.In
 		privateKey:  privateKey,
 		signer:      types.NewEIP155Signer(chainID),
 		fromAddress: crypto.PubkeyToAddress(privateKey.PublicKey),
+		clientEth:   client,
 	}
 	txBuilder.refreshNonce(context.Background())
 
@@ -85,6 +86,8 @@ func (b *TxBuild) Transfer(ctx context.Context, to string, value *big.Int) (comm
 		return common.Hash{}, err
 	}
 
+	log.Infof("sent tx %s to %s", signedTx.Hash(), to)
+
 	return signedTx.Hash(), nil
 }
 
@@ -93,7 +96,7 @@ func (b *TxBuild) getAndIncrementNonce() uint64 {
 }
 
 func (b *TxBuild) refreshNonce(ctx context.Context) {
-	nonce, err := b.client.PendingNonceAt(ctx, b.Sender())
+	nonce, err := b.clientEth.NonceAt(ctx, b.Sender(), nil)
 	if err != nil {
 		log.Error("failed to refresh nonce", "address", b.Sender(), "err", err)
 		return
