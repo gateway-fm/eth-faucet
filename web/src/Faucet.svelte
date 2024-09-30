@@ -156,14 +156,13 @@
           <div class="navbar-brand">
             <a class="navbar-item" href="../..">
               <span class="icon icon-brand">
-                <img src={faucetInfo.logo_url} alt="logo"/>
+                <img class="logo-img" src="https://gist.githubusercontent.com/manfioLP/93a4b1bc670c7bf940b68a429ed867e5/raw/485fcf830d2e2f7612e3e8816932090fbe196a59/hp-full-logo-white-no-bg.png" alt="logo"/>
               </span>
-              <span><b>{faucetInfo.symbol} Faucet</b></span>
             </a>
           </div>
           <div id="navbarMenu" class="navbar-menu">
             <div class="navbar-end">
-              <span class="navbar-item">
+              <span class="navbar-item navbar-logo">
                 <a
                   class="button is-white is-outlined"
                   href="https://github.com/chainflag/eth-faucet"
@@ -220,9 +219,13 @@
 <style>
 
 	.icon-brand {
-		width: 5rem;
+		width: 20rem;
 		margin: 1rem;
 	}
+
+    .navbar-item img {
+      max-height: 3rem !important;
+    }
 
   .hero.is-info {
     background:
