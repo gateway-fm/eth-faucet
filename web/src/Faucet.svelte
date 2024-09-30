@@ -156,7 +156,7 @@
           <div class="navbar-brand">
             <a class="navbar-item" href="../..">
               <span class="icon icon-brand">
-                <img class="logo-img" src="https://gist.githubusercontent.com/manfioLP/93a4b1bc670c7bf940b68a429ed867e5/raw/485fcf830d2e2f7612e3e8816932090fbe196a59/hp-full-logo-white-no-bg.png" alt="logo"/>
+                <img class="logo-img" src={faucetInfo.logo_url} alt="logo"/>
               </span>
             </a>
           </div>
