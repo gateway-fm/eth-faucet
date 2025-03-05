@@ -8,8 +8,22 @@
 
   export let faucetInfo;
   export let input;
-  export let network;
   export let handleRequest;
+
+  const path = window.location.pathname;
+  let network = '';
+
+  network = path.includes('stavanger')
+    ? 'Stavanger Testnet'
+    : path.substring(1).split('.')[0].replace('-', ' ');
+
+  const openMessageWindow = (subject, email) => {
+    const emailSupport = 'support+presto@gateway.fm';
+    const mailtoLink = `mailto:${emailSupport}?subject=${encodeURIComponent(subject)}`;
+
+    window.location.href = mailtoLink;
+  };
+  
 </script>
 
 <main>
@@ -32,7 +46,11 @@
                 rel="noopener noreferrer"
               >
                 <button class="button is-primary is-rounded">
-                  Deploy rollup <img src={arrowRight} class="icon arrow-right" alt="arrow"/>
+                  Deploy rollup <img
+                    src={arrowRight}
+                    class="icon arrow-right"
+                    alt="arrow"
+                  />
                 </button></a
               >
             </div>
@@ -85,6 +103,7 @@
                 <div class="box-offer">
                   Claim 1 POL test token for development. If you need additional
                   tokens for extensive testing, please
+                  <!-- svelte-ignore a11y-invalid-attribute -->
                   <a
                     class="link"
                     href="#"
@@ -238,6 +257,6 @@
 
   .icon {
     width: 16px;
-    height: 16px;;
+    height: 16px;
   }
 </style>

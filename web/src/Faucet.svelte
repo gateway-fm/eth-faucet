@@ -26,18 +26,14 @@
 
   let mounted = false;
   let hcaptchaLoaded = false;
-  let network = '';
 
   onMount(async () => {
     const res = await fetch('/api/info');
     faucetInfo = await res.json();
     mounted = true;
   });
-  const path = window.location.pathname;
 
-  network = path.includes('stavanger')
-    ? 'Stavanger Testnet'
-    : path.substring(1).split('.')[0];
+
   window.hcaptchaOnLoad = () => {
     hcaptchaLoaded = true;
   };
@@ -114,13 +110,6 @@
     }
   }
 
-  const openMessageWindow = (subject, email) => {
-    const emailSupport = 'support+presto@gateway.fm';
-    const mailtoLink = `mailto:${emailSupport}?subject=${encodeURIComponent(subject)}`;
-
-    window.location.href = mailtoLink;
-  };
-
   function capitalize(str) {
     const lower = str.toLowerCase();
     return str.charAt(0).toUpperCase() + lower.slice(1);
@@ -142,5 +131,5 @@
 {#if baseFrontendType}
   <BaseDesign {faucetInfo} {input} {handleRequest} />
 {:else if !redesignFrontendType}
-  <Redesign {faucetInfo} {input} {network} {handleRequest} />
+  <Redesign {faucetInfo} {input} {handleRequest} />
 {/if}
