@@ -16,7 +16,7 @@
     payout: 1,
     symbol: 'ETH',
     hcaptcha_sitekey: '',
-    frontend_type: '',
+    frontend_type: 'base',
     paid_customer: false,
   };
 
@@ -58,7 +58,7 @@
     animate: { in: 'fadeIn', out: 'fadeOut' },
   });
 
-  async function handleRequest() {
+  async function handleRequest(input) {
     let address = input;
     if (address === null) {
       toast({ message: 'input required', type: 'is-warning' });
@@ -70,7 +70,7 @@
         const provider = new CloudflareProvider();
         address = await provider.resolveName(address);
         if (!address) {
-          toast({ message: 'invalid ENS name', type: 'is-warning' });
+          toast({ message: 'invalid name', type: 'is-warning' });
           return;
         }
       } catch (error) {
@@ -114,8 +114,6 @@
     const lower = str.toLowerCase();
     return str.charAt(0).toUpperCase() + lower.slice(1);
   }
-
-  console.log(faucetInfo);
 </script>
 
 <svelte:head>
