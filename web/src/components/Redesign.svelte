@@ -1,10 +1,9 @@
 <script>
-  import Button from './Button.svelte';
   import CopyButton from './CopyButton.svelte';
   import Navigation from './Navigation.svelte';
   import networkIcon from './../assets/networkIcon.svg';
   import arrowRight from './../assets/arrowRight.svg';
-  import logo from './../../public/logo.svg';
+  import logo from './../assets/logo.svg';
 
   export let faucetInfo;
   export let input;
