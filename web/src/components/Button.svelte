@@ -21,11 +21,11 @@
     border-width: 0px;
     padding: 12px 24px;
     cursor: pointer;
-     background-color: #8950FA;
+     background-color: var(--primary-color, #8950FA);
   }
 
   .primary {
-    background-color: #8950FA;
+    background-color: var(--primary-color, #8950FA);
   }
 
   .secondary {

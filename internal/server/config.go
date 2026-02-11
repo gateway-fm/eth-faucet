@@ -15,6 +15,9 @@ type Config struct {
 	hcaptchaSecret    string
 	logoURL           string
 	backgroundURL     string
+	primaryColor      string
+	primaryColorLight string
+	primaryColorDark  string
 	frontendType      string
 	paidCustomer      bool
 	mainnetProvider   string
@@ -25,7 +28,7 @@ func NewConfig(
 	network, symbol string,
 	httpPort, interval, proxyCount int,
 	payout int64,
-	hcaptchaSiteKey, hcaptchaSecret, logoURL, backgroundURL string,
+	hcaptchaSiteKey, hcaptchaSecret, logoURL, backgroundURL, primaryColor, primaryColorLight, primaryColorDark string,
 	frontendType string,
 	paidCustomer bool,
 	mainnetProvider string,
@@ -42,6 +45,9 @@ func NewConfig(
 		hcaptchaSecret:    hcaptchaSecret,
 		logoURL:           logoURL,
 		backgroundURL:     backgroundURL,
+		primaryColor:      primaryColor,
+		primaryColorLight: primaryColorLight,
+		primaryColorDark:  primaryColorDark,
 		frontendType:      frontendType,
 		paidCustomer:      paidCustomer,
 		mainnetProvider:   mainnetProvider,
