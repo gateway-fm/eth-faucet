@@ -123,6 +123,9 @@ func (s *Server) handleInfo() http.HandlerFunc {
 			HcaptchaSiteKey: s.cfg.hcaptchaSiteKey,
 			LogoURL:         s.cfg.logoURL,
 			BackgroundURL:   s.cfg.backgroundURL,
+			PrimaryColor:      s.cfg.primaryColor,
+			PrimaryColorLight: s.cfg.primaryColorLight,
+			PrimaryColorDark:  s.cfg.primaryColorDark,
 			FrontendType:    s.cfg.frontendType,
 			PaidCustomer:    s.cfg.paidCustomer,
 		}, http.StatusOK)

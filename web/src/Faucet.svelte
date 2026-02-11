@@ -19,6 +19,9 @@
     hcaptcha_sitekey: '',
     logo_url: '/gatewayfm-logo.svg',
     background_url: 'background.jpg',
+    primary_color: '#8950fa',
+    primary_color_light: '#eee8ff',
+    primary_color_dark: '#161718',
     frontend_type: 'redesign',
     paid_customer: false,
   };
@@ -65,10 +68,6 @@
     hcaptchaLoaded = true;
   };
 
-  $: document.title = `${faucetInfo.symbol} ${capitalize(
-    faucetInfo.network,
-  )} Faucet`;
-
   window.hcaptchaOnLoad = () => {
     hcaptchaLoaded = true;
   };
@@ -76,9 +75,9 @@
   $: baseFrontendType = faucetInfo.frontend_type === 'base';
   $: redesignFrontendType = faucetInfo.frontend_type === 'redesign';
 
-  $: document.title = `${faucetInfo.symbol} ${capitalize(
-    faucetInfo.network,
-  )} Faucet`;
+  $: if (mounted) {
+    document.title = `${faucetInfo.network} Faucet`;
+  }
 
   let widgetID;
   $: if (mounted && hcaptchaLoaded) {
@@ -167,8 +166,10 @@
   {/if}
 </svelte:head>
 
-{#if baseFrontendType}
-  <BaseDesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
-{:else if redesignFrontendType}
-  <Redesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
+{#if mounted}
+  {#if baseFrontendType}
+    <BaseDesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
+  {:else if redesignFrontendType}
+    <Redesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
+  {/if}
 {/if}

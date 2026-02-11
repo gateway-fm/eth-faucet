@@ -37,6 +37,9 @@ var (
 	mainnetProviderFlag   = flag.String("wallet.mainnetprovider", os.Getenv("MAINNET_WEB3_PROVIDER"), "Endpoint for Ethereum mainnet JSON-RPC connection")
 	minMainnetBalanceFlag = flag.Int64("faucet.minmainnetbalance", 0, "Minimum balance required on mainnet (in Gwei)")
 
+	primaryColorFlag      = flag.String("frontend.primaryColor", "#8950fa", "Primary accent color for the frontend (hex, e.g. #0046FF)")
+	primaryColorLightFlag = flag.String("frontend.primaryColorLight", "#eee8ff", "Light variant of primary color (hex, e.g. #D6E4FF)")
+	primaryColorDarkFlag  = flag.String("frontend.primaryColorDark", "#161718", "Dark variant of primary color (hex, e.g. #001A4D)")
 	frontendTypeFlag = flag.String("frontend.type", "redesign", "Type of frontend to generate. Values enum: 'base', 'redesign'.")
 	paidCustomerFlag = flag.Bool("faucet.paidcustomer", false, "Whether the faucet belongs to the paid customer")
 
@@ -86,6 +89,9 @@ func Execute() {
 		*hcaptchaSecretFlag,
 		*logoFlag,
 		*backgroundFlag,
+		*primaryColorFlag,
+		*primaryColorLightFlag,
+		*primaryColorDarkFlag,
 		*frontendTypeFlag,
 		*paidCustomerFlag,
 		*mainnetProviderFlag,

@@ -68,14 +68,14 @@
   }
 
   .navbar-item:hover {
-    color: #8950fa !important;
+    color: var(--primary-color, #8950fa) !important;
     background-color: transparent !important;
   }
 
   @media (max-width: 768px) {
     .burger-menu {
       display: block;
-      color: #8950fa;
+      color: var(--primary-color, #8950fa);
     }
 
     .navbar {
@@ -91,7 +91,7 @@
     }
     .navbar-item:hover {
       color: white !important;
-      background-color: rgba(137, 80, 250, 0.5) !important;
+      background-color: var(--primary-color-light, rgba(137, 80, 250, 0.5)) !important;
     }
 
     .navbar.open {

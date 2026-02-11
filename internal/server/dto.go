@@ -28,6 +28,9 @@ type infoResponse struct {
 	HcaptchaSiteKey string `json:"hcaptcha_sitekey,omitempty"`
 	LogoURL         string `json:"logo_url"`
 	BackgroundURL   string `json:"background_url"`
+	PrimaryColor      string `json:"primary_color,omitempty"`
+	PrimaryColorLight string `json:"primary_color_light,omitempty"`
+	PrimaryColorDark  string `json:"primary_color_dark,omitempty"`
 	PaidCustomer    bool   `json:"paid_customer"`
 	FrontendType    string `json:"frontend_type"`
 }

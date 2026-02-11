@@ -26,7 +26,7 @@
   }
 </script>
 
-<main>
+<main style="--primary-color: {faucetInfo.primary_color}; --primary-color-light: {faucetInfo.primary_color_light}; --primary-color-dark: {faucetInfo.primary_color_dark};">
   <section
     class="hero is-info is-fullheight"
     style="background-image: url({faucetInfo.background_url})"
@@ -34,21 +34,19 @@
     <div class="hero-head">
       <nav class="navbar">
         <div class="header-container">
-          <div class="navbar-brand">
-            <a class="navbar-item" href="https://gateway.fm/">
-              <span class="icon icon-brand">
-                <img src={faucetInfo.logo_url} alt="logo" />
-              </span>
-            </a>
-            <div class="navbar-desktop">
-              {#if !paidCustomer}
+          {#if !paidCustomer}
+            <div class="navbar-brand">
+              <a class="navbar-item" href="https://gateway.fm/">
+                <span class="icon icon-brand">
+                  <img src={faucetInfo.logo_url} alt="logo" />
+                </span>
+              </a>
+              <div class="navbar-desktop">
                 <Navigation />
-              {/if}
+              </div>
             </div>
-          </div>
-          <div>
-            <div class="navbar-end">
-              {#if !paidCustomer}
+            <div>
+              <div class="navbar-end">
                 <a
                   class="navbar-desktop"
                   href="https://presto.gateway.fm/onboarding"
@@ -63,14 +61,16 @@
                     />
                   </button></a
                 >
-              {/if}
+              </div>
             </div>
-          </div>
-          <div class="navbar-mobile">
-            {#if !paidCustomer}
+            <div class="navbar-mobile">
               <Navigation />
-            {/if}
-          </div>
+            </div>
+          {:else}
+            <div class="logo-centered">
+              <img src={faucetInfo.logo_url} alt="logo" class="logo-large" />
+            </div>
+          {/if}
         </div>
       </nav>
     </div>
@@ -206,12 +206,12 @@
     font-size: 14px;
     font-weight: 500;
     padding: 8px 12px;
-    background-color: #dcf0fd;
+    background-color: var(--primary-color-light);
     border-radius: 8px;
     color: #183053;
   }
   .link {
-    color: #8950fa !important;
+    color: var(--primary-color) !important;
     text-decoration: underline;
     cursor: pointer;
   }
@@ -221,7 +221,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-color: #8950fa;
+    background-color: var(--primary-color);
     gap: 16px;
   }
 
@@ -240,7 +240,8 @@
     align-items: center;
     padding: 8px 12px;
     border-radius: 8px;
-    background-color: #eee8ff;
+    background-color: var(--primary-color-light);
+    color: #183053;
   }
   .field {
     display: flex;
@@ -249,7 +250,7 @@
   }
 
   .gas-token {
-    color: #8950fa;
+    color: var(--primary-color-dark);
   }
 
   .card {
@@ -260,25 +261,23 @@
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
     border-radius: 19px;
     padding: 32px;
-    color: #161718;
+    color: var(--primary-color-dark);
   }
 
   .title {
     display: inline-flex;
-    color: #161718;
+    color: var(--primary-color) !important;
     gap: 8px;
     font-weight: 500;
     font-size: 72px; /* Adjust size as needed */
     line-height: 80px;
     letter-spacing: 0px;
   }
-  .hero.is-info {
-    background:
-      linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
+  :global(.hero.is-info) {
+    background-color: transparent !important;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
     background-size: cover;
   }
 
@@ -289,7 +288,7 @@
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0px;
-    color: #161718;
+    color: var(--primary-color-dark);
   }
 
   .navbar-mobile {
@@ -313,7 +312,7 @@
   }
 
   .navbar-item {
-    color: #8950fa !important;
+    color: var(--primary-color) !important;
   }
   .navbar-item:hover {
     background-color: transparent !important;
@@ -327,6 +326,17 @@
 
   .icon-brand {
     width: 8rem;
+  }
+
+  .logo-centered {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .logo-large {
+    height: 56px;
+    object-fit: contain;
   }
 
   @media (max-width: 992px) {

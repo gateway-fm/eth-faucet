@@ -96,6 +96,9 @@ The following are the available command-line flags(excluding above wallet flags)
 | -hcaptcha.secret     | hCaptcha secret                                   |                     |
 | -frontend.logo       | Logo URL to display on the frontend               | /gatewayfm-logo.svg |
 | -frontend.background | Background to display on the frontend             | /background.jpg     |
+| -frontend.primaryColor | Primary accent color (hex)                       | #8950fa             |
+| -frontend.primaryColorLight | Light variant of primary color (hex)        | #eee8ff             |
+| -frontend.primaryColorDark | Dark variant of primary color (hex)          | #161718             |
 | -frontend.type       | Type of Frontend to display (base, redesign)      | base                |
 | -faucet.paidcustomer | Whether the faucet will belong to a paid customer | false               |
 | -wallet.mainnetprovider | Endpoint for Ethereum mainnet JSON-RPC connection |                     |
