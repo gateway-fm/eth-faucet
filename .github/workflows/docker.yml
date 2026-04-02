@@ -21,6 +21,10 @@ jobs:
         with:
           images: gatewayfm/eth-faucet-generic
 
+      - name: Debug DockerHub secrets presence
+        run: |
+          test -n "${{ secrets.DOCKERHUB_USERNAME }}" && echo "DOCKERHUB_USERNAME=set" || echo "DOCKERHUB_USERNAME=empty"
+          test -n "${{ secrets.DOCKERHUB_TOKEN }}" && echo "DOCKERHUB_TOKEN=set" || echo "DOCKERHUB_TOKEN=empty"
 
       - name: Login to DockerHub
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
