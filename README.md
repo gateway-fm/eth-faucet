@@ -90,6 +90,8 @@ The following are the available command-line flags(excluding above wallet flags)
 | -proxycount          | Count of reverse proxies in front of the server   | 0                   |
 | -faucet.amount       | Number of Gwei to transfer per user request       | 1000000000          |
 | -faucet.minutes      | Number of minutes to wait between funding rounds  | 1440                |
+| -faucet.ipwithdrawals | Number of withdrawals allowed per IP within the faucet.minutes window | 1 |
+| -faucet.walletwithdrawals | Number of withdrawals allowed per wallet address within the faucet.minutes window | 1 |
 | -faucet.name         | Network name to display on the frontend           | testnet             |
 | -faucet.symbol       | Token symbol to display on the frontend           | ETH                 |
 | -hcaptcha.sitekey    | hCaptcha sitekey                                  |                     |

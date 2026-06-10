@@ -16,19 +16,29 @@ import (
 )
 
 type Limiter struct {
-	mutex      sync.Mutex
-	cache      *ttlcache.Cache
-	proxyCount int
-	ttl        time.Duration
+	mutex             sync.Mutex
+	cache             *ttlcache.Cache
+	proxyCount        int
+	ttl               time.Duration
+	ipWithdrawals     int
+	walletWithdrawals int
 }
 
-func NewLimiter(proxyCount int, ttl time.Duration) *Limiter {
+func NewLimiter(proxyCount, ipWithdrawals, walletWithdrawals int, ttl time.Duration) *Limiter {
+	if ipWithdrawals < 1 {
+		ipWithdrawals = 1
+	}
+	if walletWithdrawals < 1 {
+		walletWithdrawals = 1
+	}
 	cache := ttlcache.NewCache()
 	cache.SkipTTLExtensionOnHit(true)
 	return &Limiter{
-		cache:      cache,
-		proxyCount: proxyCount,
-		ttl:        ttl,
+		cache:             cache,
+		proxyCount:        proxyCount,
+		ttl:               ttl,
+		ipWithdrawals:     ipWithdrawals,
+		walletWithdrawals: walletWithdrawals,
 	}
 }
 
@@ -51,33 +61,62 @@ func (l *Limiter) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.Ha
 
 	clientIP := getClientIPFromRequest(l.proxyCount, r)
 	l.mutex.Lock()
-	if l.limitByKey(w, address) || l.limitByKey(w, clientIP) {
+	if l.limitByKey(w, address, l.walletWithdrawals) || l.limitByKey(w, clientIP, l.ipWithdrawals) {
 		l.mutex.Unlock()
 		return
 	}
-	l.cache.SetWithTTL(address, true, l.ttl)
-	l.cache.SetWithTTL(clientIP, true, l.ttl)
+	walletCount := l.increment(address)
+	ipCount := l.increment(clientIP)
 	l.mutex.Unlock()
 
 	next.ServeHTTP(w, r)
 	if w.(negroni.ResponseWriter).Status() != http.StatusOK {
-		l.cache.Remove(address)
-		l.cache.Remove(clientIP)
+		l.mutex.Lock()
+		l.decrement(address)
+		l.decrement(clientIP)
+		l.mutex.Unlock()
 		return
 	}
 	log.WithFields(log.Fields{
-		"address":  address,
-		"clientIP": clientIP,
-	}).Info("Maximum request limit has been reached")
+		"address":           address,
+		"clientIP":          clientIP,
+		"walletWithdrawals": fmt.Sprintf("%d/%d", walletCount, l.walletWithdrawals),
+		"ipWithdrawals":     fmt.Sprintf("%d/%d", ipCount, l.ipWithdrawals),
+	}).Info("Faucet withdrawal recorded")
 }
 
-func (l *Limiter) limitByKey(w http.ResponseWriter, key string) bool {
-	if _, ttl, err := l.cache.GetWithTTL(key); err == nil {
+func (l *Limiter) limitByKey(w http.ResponseWriter, key string, limit int) bool {
+	if count, ttl, err := l.cache.GetWithTTL(key); err == nil && count.(int) >= limit {
 		errMsg := fmt.Sprintf("You have exceeded the rate limit. Please wait %s before you try again", ttl.Round(time.Second))
 		renderJSON(w, claimResponse{Message: errMsg}, http.StatusTooManyRequests)
 		return true
 	}
 	return false
+}
+
+// increment bumps the withdrawal count for the key and returns the new count.
+// When the key already exists it reuses the remaining TTL so the window stays
+// anchored at the first claim (the cache is created with SkipTTLExtensionOnHit,
+// so GetWithTTL returns the remaining time until expiry).
+func (l *Limiter) increment(key string) int {
+	if count, ttl, err := l.cache.GetWithTTL(key); err == nil {
+		n := count.(int) + 1
+		l.cache.SetWithTTL(key, n, ttl)
+		return n
+	}
+	l.cache.SetWithTTL(key, 1, l.ttl)
+	return 1
+}
+
+// decrement rolls back a withdrawal count, removing the entry once it reaches zero.
+func (l *Limiter) decrement(key string) {
+	if count, ttl, err := l.cache.GetWithTTL(key); err == nil {
+		if c := count.(int); c > 1 {
+			l.cache.SetWithTTL(key, c-1, ttl)
+		} else {
+			l.cache.Remove(key)
+		}
+	}
 }
 
 func getClientIPFromRequest(proxyCount int, r *http.Request) string {

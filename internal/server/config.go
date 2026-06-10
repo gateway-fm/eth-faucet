@@ -9,6 +9,8 @@ type Config struct {
 	symbol            string
 	httpPort          int
 	interval          int
+	ipWithdrawals     int
+	walletWithdrawals int
 	payout            int64
 	proxyCount        int
 	hcaptchaSiteKey   string
@@ -26,7 +28,7 @@ type Config struct {
 
 func NewConfig(
 	network, symbol string,
-	httpPort, interval, proxyCount int,
+	httpPort, interval, ipWithdrawals, walletWithdrawals, proxyCount int,
 	payout int64,
 	hcaptchaSiteKey, hcaptchaSecret, logoURL, backgroundURL, primaryColor, primaryColorLight, primaryColorDark string,
 	frontendType string,
@@ -39,6 +41,8 @@ func NewConfig(
 		symbol:            symbol,
 		httpPort:          httpPort,
 		interval:          interval,
+		ipWithdrawals:     ipWithdrawals,
+		walletWithdrawals: walletWithdrawals,
 		payout:            payout,
 		proxyCount:        proxyCount,
 		hcaptchaSiteKey:   hcaptchaSiteKey,
