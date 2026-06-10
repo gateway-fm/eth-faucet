@@ -9,9 +9,11 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/mock"
+	"github.com/urfave/negroni/v3"
 
 	"github.com/chainflag/eth-faucet/internal/chain"
 )
@@ -71,6 +73,78 @@ func TestHandleClaim(t *testing.T) {
 
 	mockBuilder.AssertExpectations(t)
 
+}
+
+// testAddress returns a valid EIP-55 checksummed address derived from n.
+func testAddress(n int) string {
+	return common.HexToAddress(fmt.Sprintf("0x%040x", n)).Hex()
+}
+
+// claim drives a single request through the limiter middleware as if it came
+// from clientIP. nextStatus is the status the downstream handler responds with
+// when the limiter lets the request through. It returns the final status code.
+func claim(limiter *Limiter, address, clientIP string, nextStatus int) int {
+	reqBody := strings.NewReader(fmt.Sprintf(`{"address": "%s"}`, address))
+	req := httptest.NewRequest("POST", "/api/claim", reqBody)
+	req.RemoteAddr = clientIP + ":12345"
+
+	rr := httptest.NewRecorder()
+	rw := negroni.NewResponseWriter(rr)
+	limiter.ServeHTTP(rw, req, func(w http.ResponseWriter, r *http.Request) {
+		renderJSON(w, claimResponse{Message: "ok"}, nextStatus)
+	})
+	return rw.Status()
+}
+
+func TestLimiterWalletAndIPWithdrawals(t *testing.T) {
+	// 1 claim per wallet, 5 claims per IP, within an active window.
+	limiter := NewLimiter(0, 5, 1, time.Hour)
+	const ip = "10.0.0.1"
+
+	// Five distinct wallets from the same IP all succeed.
+	for i := 1; i <= 5; i++ {
+		if code := claim(limiter, testAddress(i), ip, http.StatusOK); code != http.StatusOK {
+			t.Fatalf("wallet %d: expected %d, got %d", i, http.StatusOK, code)
+		}
+	}
+
+	// Sixth distinct wallet from the same IP is blocked by the IP limit.
+	if code := claim(limiter, testAddress(6), ip, http.StatusOK); code != http.StatusTooManyRequests {
+		t.Errorf("6th wallet: expected %d, got %d", http.StatusTooManyRequests, code)
+	}
+
+	// A fresh IP, but reusing wallet #1, is blocked by the per-wallet limit of 1.
+	if code := claim(limiter, testAddress(1), "10.0.0.2", http.StatusOK); code != http.StatusTooManyRequests {
+		t.Errorf("repeat wallet: expected %d, got %d", http.StatusTooManyRequests, code)
+	}
+}
+
+func TestLimiterSingleWithdrawalRegression(t *testing.T) {
+	// Defaults (1/1) preserve the original single-claim-per-window behavior.
+	limiter := NewLimiter(0, 1, 1, time.Hour)
+	const ip = "10.0.0.1"
+
+	if code := claim(limiter, testAddress(1), ip, http.StatusOK); code != http.StatusOK {
+		t.Fatalf("first claim: expected %d, got %d", http.StatusOK, code)
+	}
+	if code := claim(limiter, testAddress(2), ip, http.StatusOK); code != http.StatusTooManyRequests {
+		t.Errorf("second claim same IP: expected %d, got %d", http.StatusTooManyRequests, code)
+	}
+}
+
+func TestLimiterRollbackOnFailure(t *testing.T) {
+	// A failed downstream response must not consume the window slot.
+	limiter := NewLimiter(0, 1, 1, time.Hour)
+	const ip = "10.0.0.1"
+	addr := testAddress(1)
+
+	if code := claim(limiter, addr, ip, http.StatusInternalServerError); code != http.StatusInternalServerError {
+		t.Fatalf("failed claim: expected %d, got %d", http.StatusInternalServerError, code)
+	}
+	// The count was rolled back, so a retry is allowed.
+	if code := claim(limiter, addr, ip, http.StatusOK); code != http.StatusOK {
+		t.Errorf("retry after failure: expected %d, got %d", http.StatusOK, code)
+	}
 }
 
 func TestHandleInfo(t *testing.T) {

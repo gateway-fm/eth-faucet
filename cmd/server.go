@@ -26,6 +26,8 @@ var (
 
 	payoutFlag            = flag.Int64("faucet.amount", 1000000000, "Number of Gwei to transfer per user request")
 	intervalFlag          = flag.Int("faucet.minutes", 1440, "Number of minutes to wait between funding rounds")
+	ipWithdrawalsFlag     = flag.Int("faucet.ipwithdrawals", 1, "Number of withdrawals allowed per IP within the faucet.minutes window")
+	walletWithdrawalsFlag = flag.Int("faucet.walletwithdrawals", 1, "Number of withdrawals allowed per wallet address within the faucet.minutes window")
 	netnameFlag           = flag.String("faucet.name", "testnet", "Network name to display on the frontend")
 	symbolFlag            = flag.String("faucet.symbol", "ETH", "Token symbol to display on the frontend")
 	logoFlag              = flag.String("frontend.logo", "/gatewayfm-logo.svg", "Logo to display on the frontend")
@@ -83,6 +85,8 @@ func Execute() {
 		*symbolFlag,
 		*httpPortFlag,
 		*intervalFlag,
+		*ipWithdrawalsFlag,
+		*walletWithdrawalsFlag,
 		*proxyCntFlag,
 		*payoutFlag,
 		*hcaptchaSiteKeyFlag,
