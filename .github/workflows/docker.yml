@@ -20,6 +20,10 @@ jobs:
         uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
         with:
           images: gatewayfm/eth-faucet-generic
+          # DockerHub repo has tag immutability enabled, so a moving `latest`
+          # tag cannot be updated. Only publish immutable version tags.
+          flavor: |
+            latest=false
 
       - name: Login to DockerHub
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
