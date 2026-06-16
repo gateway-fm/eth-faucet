@@ -24,7 +24,10 @@ RUN go build -o eth-faucet -ldflags "-s -w"
 
 FROM alpine:3.22
 
-RUN apk add --no-cache ca-certificates
+# PRST-3866: patch openssl libs (libssl3/libcrypto3) for CVE-2026-45447
+# (PKCS#7/S-MIME use-after-free), 3.5.6-r0 -> 3.5.7-r0. Scoped upgrade only;
+# no blanket `apk upgrade`.
+RUN apk add --no-cache --upgrade ca-certificates libssl3 libcrypto3
 
 COPY --from=backend /backend-build/eth-faucet /app/eth-faucet
 
