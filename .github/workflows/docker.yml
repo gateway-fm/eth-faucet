@@ -1,10 +1,6 @@
 name: Docker
 
 on:
-  push:
-    tags: [v*]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
     inputs:
       version:
@@ -14,6 +10,8 @@ on:
 
 jobs:
   docker:
+    # Only publish from main.
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,14 +23,12 @@ jobs:
         with:
           images: gatewayfm/eth-faucet-generic
           # DockerHub repo has tag immutability enabled, so a moving `latest`
-          # tag cannot be updated. Only publish immutable version tags.
+          # tag cannot be updated. Publish only the immutable version supplied
+          # to the manual run.
           flavor: |
             latest=false
-          # Publish tags come from either the manual workflow_dispatch input
-          # (the version to tag) or a pushed v* git tag. No moving branch tag.
           tags: |
-            type=raw,value=${{ inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=ref,event=tag
+            type=raw,value=${{ inputs.version }}
 
       - name: Login to DockerHub
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
