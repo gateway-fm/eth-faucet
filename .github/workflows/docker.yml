@@ -8,6 +8,11 @@ on:
         required: true
         type: string
 
+# Least privilege: this workflow only reads the repo and pushes to DockerHub
+# (via secrets), so it needs no write scope on the GITHUB_TOKEN.
+permissions:
+  contents: read
+
 jobs:
   docker:
     # Only publish from main.
