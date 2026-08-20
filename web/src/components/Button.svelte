@@ -1,15 +1,14 @@
 <script>
-  export let style = 'primary'
-  export let disabled = false
-  export let icon
+  export let style = 'primary';
+  export let disabled = false;
+  export let icon;
 </script>
 
-<button {disabled} class={style} >
+<button {disabled} class={style}>
   <slot>
-{#if icon}
-{icon}
-{/if}
-
+    {#if icon}
+      {icon}
+    {/if}
   </slot>
 </button>
 
@@ -21,15 +20,15 @@
     border-width: 0px;
     padding: 12px 24px;
     cursor: pointer;
-     background-color: var(--primary-color, #8950FA);
+    background-color: var(--primary-color, #8950fa);
   }
 
   .primary {
-    background-color: var(--primary-color, #8950FA);
+    background-color: var(--primary-color, #8950fa);
   }
 
   .secondary {
-    background: #FA50C1;
+    background: #fa50c1;
   }
 
   button:hover {
@@ -37,15 +36,14 @@
     opacity: 0.9;
   }
 
-  button:disabled{
+  button:disabled {
     background-color: #cccccc;
     color: #333;
-    cursor:auto;
+    cursor: auto;
   }
 
-  button:disabled:hover{
-    transform:scale(1);
+  button:disabled:hover {
+    transform: scale(1);
     opacity: 1;
   }
-
 </style>

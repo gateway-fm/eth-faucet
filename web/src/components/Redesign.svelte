@@ -26,7 +26,9 @@
   }
 </script>
 
-<main style="--primary-color: {faucetInfo.primary_color}; --primary-color-light: {faucetInfo.primary_color_light}; --primary-color-dark: {faucetInfo.primary_color_dark};">
+<main
+  style="--primary-color: {faucetInfo.primary_color}; --primary-color-light: {faucetInfo.primary_color_light}; --primary-color-dark: {faucetInfo.primary_color_dark};"
+>
   <section
     class="hero is-info is-fullheight"
     style="background-image: url({faucetInfo.background_url})"

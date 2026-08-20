@@ -6,7 +6,7 @@
   function copyToClipboard() {
     navigator.clipboard.writeText(text);
     tooltipVisible = true;
-    setTimeout(() => tooltipVisible = false, 1000); // Hide tooltip after 1s
+    setTimeout(() => (tooltipVisible = false), 1000); // Hide tooltip after 1s
   }
 </script>
 
@@ -44,7 +44,8 @@
   }
   @media (max-width: 768px) {
     .button-copy-img {
-     min-width: 24px;
-     min-height: 24px;
-    }}
+      min-width: 24px;
+      min-height: 24px;
+    }
+  }
 </style>
