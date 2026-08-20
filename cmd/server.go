@@ -42,7 +42,7 @@ var (
 	primaryColorFlag      = flag.String("frontend.primaryColor", "#8950fa", "Primary accent color for the frontend (hex, e.g. #0046FF)")
 	primaryColorLightFlag = flag.String("frontend.primaryColorLight", "#eee8ff", "Light variant of primary color (hex, e.g. #D6E4FF)")
 	primaryColorDarkFlag  = flag.String("frontend.primaryColorDark", "#161718", "Dark variant of primary color (hex, e.g. #001A4D)")
-	frontendTypeFlag = flag.String("frontend.type", "redesign", "Type of frontend to generate. Values enum: 'base', 'redesign'.")
+	frontendTypeFlag = flag.String("frontend.type", "redesign", "Type of frontend to generate. Values enum: 'base', 'redesign', 'teiza'.")
 	paidCustomerFlag = flag.Bool("faucet.paidcustomer", false, "Whether the faucet belongs to the paid customer")
 
 	hcaptchaSiteKeyFlag = flag.String("hcaptcha.sitekey", os.Getenv("HCAPTCHA_SITEKEY"), "hCaptcha sitekey")
