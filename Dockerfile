@@ -6,6 +6,9 @@ COPY web/package.json web/yarn.lock ./
 RUN yarn install
 
 COPY web ./
+# Vite inlines VITE_* at build time, so the favicon path is a build arg.
+ARG VITE_FAVICON_PATH
+ENV VITE_FAVICON_PATH=$VITE_FAVICON_PATH
 RUN yarn build
 
 FROM golang:1.25-alpine AS backend

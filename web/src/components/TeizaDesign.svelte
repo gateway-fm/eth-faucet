@@ -35,6 +35,10 @@
 
   let copiedTimer;
 
+  // VITE_FAVICON_PATH (a build arg, see Dockerfile) wins; otherwise the
+  // bundled TEIZA mark is the favicon.
+  const faviconPath = import.meta.env.VITE_FAVICON_PATH || teizaMark;
+
   async function onCopy() {
     try {
       await navigator.clipboard.writeText(faucetInfo.account);
@@ -55,6 +59,10 @@
     copiedTimer = setTimeout(() => (copied = false), 1600);
   }
 </script>
+
+<svelte:head>
+  <link rel="icon" href={faviconPath} />
+</svelte:head>
 
 <main class="tz-root">
   <header class="tz-header">
