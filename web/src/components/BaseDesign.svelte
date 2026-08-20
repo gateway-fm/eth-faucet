@@ -3,18 +3,20 @@
   export let input;
   export let handleRequest;
   export let gweiToEth;
-
 </script>
 
 <main>
-  <section class="hero is-info is-fullheight" style='background-image: url({faucetInfo.background_url})'>
+  <section
+    class="hero is-info is-fullheight"
+    style="background-image: url({faucetInfo.background_url})"
+  >
     <div class="hero-head">
       <nav class="navbar">
         <div class="container">
           <div class="navbar-brand">
             <a class="navbar-item" href="../..">
               <span class="icon icon-brand">
-                <img src={faucetInfo.logo_url} alt="logo"/>
+                <img src={faucetInfo.logo_url} alt="logo" />
               </span>
               <span><b>{faucetInfo.symbol} Faucet</b></span>
             </a>
@@ -76,7 +78,7 @@
 </main>
 
 <style>
- .hero.is-info {
+  .hero.is-info {
     background:
       linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
       no-repeat center center fixed;

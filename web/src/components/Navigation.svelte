@@ -91,7 +91,10 @@
     }
     .navbar-item:hover {
       color: white !important;
-      background-color: var(--primary-color-light, rgba(137, 80, 250, 0.5)) !important;
+      background-color: var(
+        --primary-color-light,
+        rgba(137, 80, 250, 0.5)
+      ) !important;
     }
 
     .navbar.open {

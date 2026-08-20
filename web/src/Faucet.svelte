@@ -74,7 +74,9 @@
   };
 
   // ?frontend=<type> previews a design without changing the server config.
-  const frontendOverride = new URLSearchParams(window.location.search).get('frontend');
+  const frontendOverride = new URLSearchParams(window.location.search).get(
+    'frontend',
+  );
   $: frontendType = frontendOverride ?? faucetInfo.frontend_type;
   $: baseFrontendType = frontendType === 'base';
   $: redesignFrontendType = frontendType === 'redesign';

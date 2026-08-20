@@ -66,12 +66,19 @@
 
 <main class="tz-root">
   <header class="tz-header">
-    <a class="tz-logo" href="https://teiza.com/" target="_blank" rel="noopener noreferrer">
+    <a
+      class="tz-logo"
+      href="https://teiza.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <img src={teizaLogo} alt="TEIZA" />
     </a>
     <nav class="tz-nav">
       {#each navLinks as link}
-        <a href={link.url} target="_blank" rel="noopener noreferrer">{link.title}</a>
+        <a href={link.url} target="_blank" rel="noopener noreferrer"
+          >{link.title}</a
+        >
       {/each}
     </nav>
     <a
@@ -83,7 +90,9 @@
   </header>
 
   <section class="tz-content">
-    <span class="tz-badge"><span class="tz-badge-dot"></span>{faucetInfo.network}</span>
+    <span class="tz-badge"
+      ><span class="tz-badge-dot"></span>{faucetInfo.network}</span
+    >
     <img class="tz-mark" src={teizaMark} alt="" />
     <h1 class="tz-heading">
       <span class="tz-heading-accent">Receive</span>
@@ -106,7 +115,13 @@
             on:click={onCopy}
           >
             {#if copied}
-              <svg class="tz-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <svg
+                class="tz-copy-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
                 <path
                   d="M5 12.5l4.5 4.5L19 7.5"
                   stroke="currentColor"
@@ -116,7 +131,13 @@
                 />
               </svg>
             {:else}
-              <svg class="tz-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <svg
+                class="tz-copy-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
                 <rect
                   x="4"
                   y="4"
@@ -146,7 +167,11 @@
       />
 
       <div class="tz-button-row">
-        <button class="tz-request" disabled={!address.trim() || requesting} on:click={onRequest}>
+        <button
+          class="tz-request"
+          disabled={!address.trim() || requesting}
+          on:click={onRequest}
+        >
           {requesting ? 'Requesting…' : 'Request'}
         </button>
       </div>
@@ -182,17 +207,20 @@
     font-style: normal;
     font-weight: 400 700;
     src: url('/fonts/dm-sans/DMSans-latin.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
-      U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+      U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+      U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400 700;
     src: url('/fonts/dm-sans/DMSans-latin-ext.woff2') format('woff2');
-    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
-      U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-      U+2C60-2C7F, U+A720-A7FF;
+    unicode-range:
+      U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+      U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+      U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
 
   .tz-root {
@@ -486,11 +514,15 @@
   /* Semantic status accent (inset so it follows the rounded corners), kept
      separate from the brand blue. */
   :global(.notification.tz-toast.is-success) {
-    box-shadow: inset 4px 0 0 0 #12b76a, var(--tz-toast-shadow);
+    box-shadow:
+      inset 4px 0 0 0 #12b76a,
+      var(--tz-toast-shadow);
   }
   :global(.notification.tz-toast.is-warning),
   :global(.notification.tz-toast.is-danger) {
-    box-shadow: inset 4px 0 0 0 #e17e26, var(--tz-toast-shadow);
+    box-shadow:
+      inset 4px 0 0 0 #e17e26,
+      var(--tz-toast-shadow);
   }
   :global(.notification.tz-toast .delete) {
     background: rgba(28, 28, 28, 0.06);
