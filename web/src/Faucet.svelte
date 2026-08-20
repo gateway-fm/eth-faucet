@@ -8,6 +8,7 @@
 
   import BaseDesign from './components/BaseDesign.svelte';
   import Redesign from './components/Redesign.svelte';
+  import TeizaDesign from './components/TeizaDesign.svelte';
 
   let input = null;
 
@@ -72,8 +73,12 @@
     hcaptchaLoaded = true;
   };
 
-  $: baseFrontendType = faucetInfo.frontend_type === 'base';
-  $: redesignFrontendType = faucetInfo.frontend_type === 'redesign';
+  // ?frontend=<type> previews a design without changing the server config.
+  const frontendOverride = new URLSearchParams(window.location.search).get('frontend');
+  $: frontendType = frontendOverride ?? faucetInfo.frontend_type;
+  $: baseFrontendType = frontendType === 'base';
+  $: redesignFrontendType = frontendType === 'redesign';
+  $: teizaFrontendType = frontendType === 'teiza';
 
   $: if (mounted) {
     document.title = `${faucetInfo.network} Faucet`;
@@ -95,10 +100,15 @@
     animate: { in: 'fadeIn', out: 'fadeOut' },
   });
 
+  // Toasts inherit Bulma's colours; the teiza design brands them via a class.
+  function notify(message, type) {
+    toast({ extraClasses: teizaFrontendType ? 'tz-toast' : '', message, type });
+  }
+
   async function handleRequest(input) {
     let address = input;
     if (address === null) {
-      toast({ message: 'input required', type: 'is-warning' });
+      notify('input required', 'is-warning');
       return;
     }
 
@@ -107,11 +117,11 @@
         const provider = new CloudflareProvider();
         address = await provider.resolveName(address);
         if (!address) {
-          toast({ message: 'invalid ENS name', type: 'is-warning' });
+          notify('invalid ENS name', 'is-warning');
           return;
         }
       } catch (error) {
-        toast({ message: error.reason, type: 'is-warning' });
+        notify(error.reason, 'is-warning');
         return;
       }
     }
@@ -119,7 +129,7 @@
     try {
       address = getAddress(address);
     } catch (error) {
-      toast({ message: error.reason, type: 'is-warning' });
+      notify(error.reason, 'is-warning');
       return;
     }
 
@@ -145,7 +155,7 @@
 
       let { msg } = await res.json();
       let type = res.ok ? 'is-success' : 'is-warning';
-      toast({ message: msg, type });
+      notify(msg, type);
     } catch (err) {
       console.error(err);
     }
@@ -171,5 +181,7 @@
     <BaseDesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
   {:else if redesignFrontendType}
     <Redesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
+  {:else if teizaFrontendType}
+    <TeizaDesign {faucetInfo} {handleRequest} {gweiToEth} />
   {/if}
 {/if}
