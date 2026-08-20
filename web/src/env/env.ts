@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  readonly VITE_BRAND: string;
   readonly VITE_LOGO_PATH: string;
   readonly VITE_BACKGROUND_PATH: string;
   readonly VITE_FAVICON_PATH: string;

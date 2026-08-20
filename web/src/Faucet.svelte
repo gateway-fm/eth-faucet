@@ -6,8 +6,13 @@
   import { CloudflareProvider } from '@ethersproject/providers';
   import { setDefaults as setToast, toast } from 'bulma-toast';
 
-  import BaseDesign from './components/BaseDesign.svelte';
-  import Redesign from './components/Redesign.svelte';
+  import DefaultBaseDesign from './components/BaseDesign.svelte';
+  import DefaultRedesign from './components/Redesign.svelte';
+  import { brand } from './lib/brand.js';
+
+  // A brand may ship a component override for a screen; otherwise use the shared one.
+  const RedesignView = brand.overrides.redesign ?? DefaultRedesign;
+  const BaseView = brand.overrides.base ?? DefaultBaseDesign;
 
   let input = null;
 
@@ -18,6 +23,7 @@
     symbol: 'ETH',
     hcaptcha_sitekey: '',
     logo_url: '/gatewayfm-logo.svg',
+    logo_link: 'https://gateway.fm/',
     background_url: 'background.jpg',
     frontend_type: 'redesign',
     paid_customer: false,
@@ -168,7 +174,19 @@
 </svelte:head>
 
 {#if baseFrontendType}
-  <BaseDesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
+  <svelte:component
+    this={BaseView}
+    {faucetInfo}
+    {input}
+    {handleRequest}
+    {gweiToEth}
+  />
 {:else if redesignFrontendType}
-  <Redesign {faucetInfo} {input} {handleRequest} {gweiToEth} />
+  <svelte:component
+    this={RedesignView}
+    {faucetInfo}
+    {input}
+    {handleRequest}
+    {gweiToEth}
+  />
 {/if}

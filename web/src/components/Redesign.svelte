@@ -282,6 +282,14 @@
     background-size: cover;
   }
 
+  /* Bulma's .hero.is-info forces white text, which is invisible on the light
+     background. Keep the title and the "Serving from" row (incl. the address)
+     dark, as intended. */
+  .hero.is-info .title,
+  .hero.is-info .subtitle {
+    color: #161718;
+  }
+
   .subtitle {
     display: flex;
     justify-content: space-between;

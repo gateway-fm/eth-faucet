@@ -122,6 +122,7 @@ func (s *Server) handleInfo() http.HandlerFunc {
 			Payout:          strconv.FormatInt(s.cfg.payout, 10),
 			HcaptchaSiteKey: s.cfg.hcaptchaSiteKey,
 			LogoURL:         s.cfg.logoURL,
+			LogoLink:        s.cfg.logoLink,
 			BackgroundURL:   s.cfg.backgroundURL,
 			FrontendType:    s.cfg.frontendType,
 			PaidCustomer:    s.cfg.paidCustomer,

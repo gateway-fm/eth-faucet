@@ -27,6 +27,7 @@ type infoResponse struct {
 	Symbol          string `json:"symbol"`
 	HcaptchaSiteKey string `json:"hcaptcha_sitekey,omitempty"`
 	LogoURL         string `json:"logo_url"`
+	LogoLink        string `json:"logo_link"`
 	BackgroundURL   string `json:"background_url"`
 	PaidCustomer    bool   `json:"paid_customer"`
 	FrontendType    string `json:"frontend_type"`

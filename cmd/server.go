@@ -29,6 +29,7 @@ var (
 	netnameFlag           = flag.String("faucet.name", "testnet", "Network name to display on the frontend")
 	symbolFlag            = flag.String("faucet.symbol", "ETH", "Token symbol to display on the frontend")
 	logoFlag              = flag.String("frontend.logo", "/gatewayfm-logo.svg", "Logo to display on the frontend")
+	logoLinkFlag          = flag.String("frontend.logolink", "https://gateway.fm/", "URL the frontend logo links to")
 	backgroundFlag        = flag.String("frontend.background", "/background.jpg", "Background to display on the frontend")
 	keyJSONFlag           = flag.String("wallet.keyjson", os.Getenv("KEYSTORE"), "Keystore file to fund user requests with")
 	keyPassFlag           = flag.String("wallet.keypass", "password.txt", "Passphrase text file to decrypt keystore")
@@ -85,6 +86,7 @@ func Execute() {
 		*hcaptchaSiteKeyFlag,
 		*hcaptchaSecretFlag,
 		*logoFlag,
+		*logoLinkFlag,
 		*backgroundFlag,
 		*frontendTypeFlag,
 		*paidCustomerFlag,

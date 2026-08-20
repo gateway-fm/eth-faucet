@@ -1,12 +1,15 @@
 FROM node:lts-alpine AS frontend
 
+# Brand selected at build time: docker build --build-arg VITE_BRAND=teiza
+ARG VITE_BRAND=base
+
 WORKDIR /frontend-build
 
 COPY web/package.json web/yarn.lock ./
 RUN yarn install
 
 COPY web ./
-RUN yarn build
+RUN VITE_BRAND="$VITE_BRAND" yarn build
 
 FROM golang:1.25-alpine AS backend
 
