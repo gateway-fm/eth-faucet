@@ -11,7 +11,7 @@ ARG VITE_FAVICON_PATH
 ENV VITE_FAVICON_PATH=$VITE_FAVICON_PATH
 RUN yarn build
 
-FROM golang:1.25-alpine AS backend
+FROM golang:1.26-alpine AS backend
 
 RUN apk add --no-cache gcc musl-dev linux-headers
 
@@ -30,7 +30,8 @@ FROM alpine:3.22
 # PRST-3866: patch openssl libs (libssl3/libcrypto3) for CVE-2026-45447
 # (PKCS#7/S-MIME use-after-free), 3.5.6-r0 -> 3.5.7-r0. Scoped upgrade only;
 # no blanket `apk upgrade`.
-RUN apk add --no-cache --upgrade ca-certificates libssl3 libcrypto3
+# ca-certificates-bundle: 20261020-r0 drops the revoked eMudhra intermediates.
+RUN apk add --no-cache --upgrade ca-certificates ca-certificates-bundle libssl3 libcrypto3
 
 COPY --from=backend /backend-build/eth-faucet /app/eth-faucet
 
